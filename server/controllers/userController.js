@@ -27,7 +27,7 @@ module.exports.register = async (req, res, next) => {
 
 module.exports.login = async (req, res, next) => {
     try {
-        const { username, email, password } = req.body
+        const { username, password } = req.body
         const user = await User.findOne({ username })
         if (!user)
             return res.json({ msg: "Tên đăng nhập hoặc mật khẩu không đúng!", status: false })
@@ -39,5 +39,14 @@ module.exports.login = async (req, res, next) => {
         return res.json({ status: true, user })
     } catch(ex) {
         next(ex)
+    }
+}
+
+module.exports.getAllUsers = async (req, res,next ) => {
+    try {
+        const users = await User.find()
+        res.json(users)
+    } catch (err) {
+        res.status(500).json({ message: err.message })
     }
 }
